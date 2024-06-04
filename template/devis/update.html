@@ -1,0 +1,82 @@
+<div class="modal fade" id="update{{d.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Panne {{d.id}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_devis' d.id %} " enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <input name="panne" type="hidden" value="{{panne}}">
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Garage <a class="btn btn-info btn-circle" href="{% url 'list_garage' %}" target="_blank" ><i class="fa fa-plus"></i></a></label>
+                    <select class="form-control" name="garage" required>
+                      <option value="{{d.garage_id}}">{{d.garage.denomination}}</option>
+                      {% for garage in garages %}
+                        <option value="{{garage.id}}">{{garage.denomination}}</option>
+                      {% endfor %}
+                    </select>
+                    
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <hr>
+                    </div>
+                    <div class="form-group col-4 input-group-sm">
+                      <label for="exampleInputPassword1">Cout devis</label>
+                      <input type="number" min="0" class="form-control" {% if d.cout_devis  %} value="{{d.cout_devis}}" {% endif %} name="cout_devis"  required>
+                    </div>
+  
+                    <div class="form-group col-4 input-group-sm">
+                      <label for="exampleInputPassword1">Date devis</label>
+                      <input type="date" class="form-control" {% if d.date_devis  %} value="{{d.date_devis|date:'Y-m-d'}}" {% endif %} name="date_devis" required>
+                    </div>
+
+                    <div class="col-4 input-group-sm">
+                      <label for="formFile" class="form-label">Proforma(PDF)</label>
+                      <input class="form-control" type="file" name="proforma"  accept="application/pdf" id="customFile">
+                    </div>
+  
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <hr>
+                    </div>
+                    <div class="form-group col-4 input-group-sm">
+                      <label for="exampleInputPassword1">Cout réparation</label>
+                      <input type="number" min="1" class="form-control" {% if d.cout_reparation  %} value="{{d.cout_reparation}}" {% endif %} name="cout_reparation" min="0">
+                    </div>
+  
+                    <div class="form-group col-4 input-group-sm">
+                      <label for="exampleInputPassword1">Date réparation</label>
+                      <input type="date" class="form-control" {% if d.date_reparation  %} value="{{d.date_reparation|date:'Y-m-d'}}" {% endif %} name="date_reparation" >
+                    </div>
+
+                    <div class="col-4 input-group-sm">
+                      <label for="formFile" class="form-label">Facture</label>
+                      <input class="form-control" type="file" name="facture" accept="application/pdf" >
+                    </div>
+  
+                  </div>
+                  
+                  <div class="form-check">
+                    <input name="accepter" {% if d.accepter  %} checked {% endif %} class="form-check-input" type="checkbox" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault"> Accepté le dévis </label>
+                  </div>
+                  
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregister</button>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                  </div>
+            </form>
+      
+
+            </form>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau véhicule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_vehicule' 0 %} ">
+                  {% csrf_token %}
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Immatricucalation</label>
+                    <input type="text" class="form-control" name="immatriculation" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Modèle</label>
+                    <input type="text" class="form-control" name="modele" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Date d'acquision</label>
+                    <input type="date" class="form-control" name="date" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Marque</label>
+                    <select class="form-control" name="marque" required>
+                      {% for marque in marques %}
+                        <option value="{{marque.id}}">{{marque.libelle}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Catégorie</label>
+                    <select class="form-control" name="categorie" required>
+                      {% for categorie in categories %}
+                        <option value="{{categorie.id}}">{{categorie.libelle}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Type</label>
+                    <select class="form-control" name="type" required>
+                      {% for type in types %}
+                        <option value="{{type.id}}">{{type.libelle}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Carburant</label>
+                    <select class="form-control" name="carburant" required>
+                      {% for carburant in carburants %}
+                        <option value="{{carburant.id}}">{{carburant.libelle}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregister</button>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                  </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

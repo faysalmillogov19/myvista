@@ -1,0 +1,97 @@
+ {% extends 'layout/Layout.html'%}
+ <!-- Page Heading -->
+ {% load static %}
+ {% block content %}
+
+{% include  'details_mission/add_membre.html' %}
+
+{% include  'details_mission/add_escale.html' %}
+
+
+
+<div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <div class="">
+                              <h4 class="">Escales</h4>
+                          </div>
+                          <div class="">                              
+                            <button type="button" data-toggle="modal" data-target="#add_escale" class="btn btn-outline-info float-right">Nouveau <i class="fas fa-plus"></i></button>
+                                                        
+                          </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Destination</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for d in escales %}
+                                        <tr>
+                                            <td>{{d.destination}}</td>
+                                            <td>{{d.date|date:'d/m/Y'}}</td>
+                                            <td>
+                                                <button type="button" data-toggle="modal" data-target="#update_escale{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete_escale{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {% include  'details_mission/update_escale.html' %}
+                                        {% include 'details_mission/delete_escale.html' %}
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+</div>
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="">
+          <h4 class="">Membre</h4>
+      </div>
+      <div class="">                              
+        <button type="button" data-toggle="modal" data-target="#add_membre" class="btn btn-outline-info float-right">Nouveau <i class="fas fa-plus"></i></button>
+                                    
+      </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>N°CNIB</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in membres %}
+                    <tr>
+                        <td>{{d.employe.matricule}}</td>
+                        <td>{{d.employe.nom}}</td>
+                        <td>{{d.employe.prenom}}</td>
+                        <td>
+                            <button type="button" data-toggle="modal" data-target="#update_membre{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                            <button type="button" data-toggle="modal" data-target="#delete_membre{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    {% include  'details_mission/update_membre.html' %}
+                    {% include 'details_mission/delete_membre.html' %}
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+  {% endblock %}

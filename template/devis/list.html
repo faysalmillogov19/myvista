@@ -1,0 +1,87 @@
+ {% extends 'layout/Layout.html'%}
+ <!-- Page Heading -->
+ {% load static %}
+ {% block content %}
+
+{% include  'devis/add.html' %}
+
+
+
+<div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <div class="">
+                              <h4 class="">Devis</h4>
+                          </div>
+                          <div class="">                              
+                            <button type="button" data-toggle="modal" data-target="#add" class="btn btn-outline-info float-right">Nouveau <i class="fas fa-plus"></i></button>
+                                                        
+                          </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Garage </th>
+                                            <th>Date devis</th>
+                                            <th>Date repartion</th>
+                                            <th>Cout devis</th>
+                                            <th>Cout repartion</th>
+                                            <th>Proforma</th>
+                                            <th>Facture definitive</th>
+                                            <th>Accepté</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for d in data %}
+                                        <tr>
+                                            <td>{{d.garage.denomination}}</td>
+                                            <td>{{d.date_devis|date:'d/m/Y'}}</td>
+                                            <td>
+                                                {% if d.date_reparation %}
+                                                    {{d.date_reparation|date:'d/m/Y'}}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{d.cout_devis}}</td>
+                                            <td>
+                                                {% if d.cout_reparation %}
+                                                    {{d.cout_reparation}}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if d.proforma %}
+                                                    <a href="{{ d.proforma.url }}" target="_blank" class="btn btn-outline-info"><i class="fa fa-eye"></i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if d.facture %}
+                                                    <a href="{{ d.facture.url }}" target="_blank" class="btn btn-outline-info"><i class="fa fa-eye"></i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                {% if d.accepter %}
+                                                    <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                                {% else %}
+                                                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                                {% endif %}
+                                            </td>
+                                          </td>
+                                            <td>
+                                                <button type="button" data-toggle="modal" data-target="#update{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {% include  'devis/update.html' %}
+                                        {% include 'devis/delete.html' %}
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+  {% endblock %}

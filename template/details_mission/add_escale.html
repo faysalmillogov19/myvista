@@ -1,0 +1,32 @@
+<div class="modal fade" id="add_escale" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau véhicule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_escale' 0 %} ">
+                  {% csrf_token %}
+
+                  <input type="hidden" name="mission" value="{{mission.id}}" >
+                  
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Destination</label>
+                    <input type="text" class="form-control" name="destination" max="90" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Date</label>
+                    <input type="date" class="form-control" name="date" required>
+                  </div>
+
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregister</button>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                  </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

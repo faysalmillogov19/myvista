@@ -1,0 +1,52 @@
+<div class="modal fade" id="add_entretien" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau entretien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_entretien' 0 %} ">
+                  {% csrf_token %}
+
+                  <input type="hidden" name="vehicule" value="{{vehicule}}">
+
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Type</label>
+                    <select class="form-control" name="type" required>
+                      {%for type in types %}
+                        <option value="{{type.id}}">{{type.libelle}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Description</label>
+                    <textarea type="date" class="form-control" name="description" required></textarea>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Date</label>
+                    <input type="date" class="form-control" name="date" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Nombre</label>
+                    <input type="number" class="form-control" min="0" name="nombre" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Montant</label>
+                    <input type="number" class="form-control" min="0" name="montant" required>
+                  </div>
+
+                  
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregister</button>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                  </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

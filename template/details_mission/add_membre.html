@@ -1,0 +1,29 @@
+<div class="modal fade" id="add_membre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau membre</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_membre' 0 %} ">
+                  {% csrf_token %}
+
+                  <input type="hidden" name="mission" value="{{mission.id}}">
+                  
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Membre <a class="btn btn-info btn-circle" href="{% url 'list_employe' %}" target="_blank" ><i class="fa fa-plus"></i></a></label>
+                    <select class="form-control" name="employe" required>
+                      {% for employe in employes %}
+                        <option value="{{employe.id}}">{{employe.matricule}} {{employe.nom}} {{employe.prenom}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregister</button>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                  </div>
+            </form>
+            
+        </div>
+    </div>
+</div>

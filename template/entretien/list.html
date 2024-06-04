@@ -1,0 +1,56 @@
+ {% extends 'layout/Layout.html'%}
+ <!-- Page Heading -->
+ {% load static %}
+ {% block content %}
+
+{% include  'entretien/add.html' %}
+
+
+
+<div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <div class="">
+                              <h4 class="">Entretiens</h4>
+                          </div>
+                          <div class="">                              
+                            <button type="button" data-toggle="modal" data-target="#add_entretien" class="btn btn-outline-info float-right">Nouveau <i class="fas fa-plus"></i></button>
+                                                        
+                          </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Date</th>
+                                            <th>Nombre</th>
+                                            <th>Montant</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for d in data %}
+                                        <tr>
+                                            <td>{{d.description}}</td>
+                                            <td>{{d.date|date:'d/m/Y'}}</td>
+                                            <td>{{d.nombre}}</td>
+                                            <td>{{d.montant}}</td>
+                                            <td>
+                                                <button type="button" data-toggle="modal" data-target="#update_entretien{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete_entretien{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {% include  'entretien/update.html' %}
+                                        {% include 'entretien/delete.html' %}
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+  {% endblock %}

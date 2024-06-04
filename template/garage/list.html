@@ -1,0 +1,57 @@
+ {% extends 'layout/Layout.html'%}
+ <!-- Page Heading -->
+ {% load static %}
+ {% block content %}
+
+{% include  'garage/add.html' %}
+
+
+
+<div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <div class="">
+                              <h4 class="">Garages</h4>
+                          </div>
+                          <div class="">                              
+                            <button type="button" data-toggle="modal" data-target="#add" class="btn btn-outline-info float-right">Nouveau <i class="fas fa-plus"></i></button>
+                                                        
+                          </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Denomination </th>
+                                            <th>Telephone</th>
+                                            <th>Email</th>
+                                            <th>Boite postale</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for d in data %}
+                                        <tr>
+                                            <td>{{d.denomination}}</td>
+                                            <td>{{d.telephone}}</td>
+                                            <td>{{d.email}}</td>
+                                            <td>{{d.bp}}</td>
+                                          </td>
+                                            <td>
+                                                <button type="button" data-toggle="modal" data-target="#update{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {% include  'garage/update.html' %}
+                                        {% include 'garage/delete.html' %}
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+  {% endblock %}

@@ -1,0 +1,56 @@
+<div class="modal fade" id="update{{d.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Véhicule {{d.immatriculation}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_employe' d.id %} ">
+                  {% csrf_token %}
+
+                  
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">N° CNIB</label>
+                    <input type="text" class="form-control" name="matricule" value="{{d.matricule}}" max="50" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Nom</label>
+                    <input type="text" class="form-control" name="nom" value="{{d.nom}}" max="50" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Prenom</label>
+                    <input type="text" class="form-control" name="prenom" value="{{d.prenom}}"  max="90" required>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Poste <a class="btn btn-info btn-circle" href="{% url 'list_poste' %}" target="_blank" ><i class="fa fa-plus"></i></a></label>
+                    <select class="form-control" name="poste" required>
+                        <option value="{{d.poste_id}}">{{d.poste.libelle}}</option>
+                      {% for poste in postes %}
+                        <option value="{{poste.id}}">{{poste.libelle}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Date de naissance</label>
+                    <input type="date" class="form-control" name="date_naissance" value="{{d.date_naissance|date:'Y-m-d'}}" required>
+                  </div>
+                  
+                  <div class="form-group input-group-sm">
+                    <label for="exampleInputPassword1">Lieu de naissance</label>
+                    <input type="text" class="form-control" name="lieu_naissance" value="{{d.lieu_naissance}}" max="90" required>
+                  </div>
+
+
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregister</button>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                  </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
