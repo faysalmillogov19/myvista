@@ -30,17 +30,25 @@ def save(request, id):
         obj.modele=request.POST.get('modele')
         obj.date=request.POST.get('date')
         obj.categorie_id=int(request.POST.get('categorie'))
-        obj.marque_id=int(request.POST.get('marque'))
+        if request.POST.get('marque'):
+            saisie=str(request.POST.get('marque')).lower()
+            marque=Marque.objects.filter(libelle__icontains=saisie).first()
+            if marque is None:
+                marque=Marque()
+                marque.libelle= request.POST.get('marque')
+                marque.save()
+
+            obj.marque=marque
         obj.type_id=int(request.POST.get('type'))
         obj.carburant_id=int(request.POST.get('carburant'))
         obj.save()
 
-    return redirect('list_vehicule')
+    return redirect('print_infos_vehicule', id=obj.id)
 
 @is_admin
 def delete(request, id):
     Vehicule.objects.get(id=id).delete()
-    return redirect('list_vehicule')
+    return redirect('print_recapitulatif')
 
 @is_admin
 def list_vehicule(request):

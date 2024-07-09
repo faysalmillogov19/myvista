@@ -5,9 +5,23 @@
 
 {% include  'devis/add.html' %}
 
+<div class="row">
+    
+<div class="col-3" style="min-height:100%;">
+    {% if panne%}
+    <ul class="list-group text-dark text-left" style="margin: 10px 10px 10px 10px;">
+        <li class="list-group-item active text-center">Panne</li>
+        <li class="list-group-item"><i class="fa fa-car"> ({{panne.vehicule.immatriculation}}) {{panne.vehicule.marque.libelle}} {{panne.vehicule.modele}}</i></li>          
+        <li class="list-group-item"><i class="fa fa-calendar"> {{panne.date|date:'d/m/Y'}}</i></li>
+        <li class="list-group-item"><i class="fa fa-unlink">: {{panne.type.libelle}}</i></li>
+        <li class="list-group-item"><i class="fa fa-cogs">: {{panne.pieces}}</i></li>
+        <li class="list-group-item"><i class="fa fa-list">: {{panne.description}}</i></li>
+        <li class="list-group-item"><a href="{% url 'print_infos_vehicule' panne.vehicule.id %}"><i class="fa fa-chevron-left">retour</i></a></li>
+    </ul>
+    {% endif %}
+</div>
 
-
-<div class="card shadow mb-4">
+<div class="card shadow col-9">
                         <div class="card-header py-3">
                           <div class="">
                               <h4 class="">Devis</h4>
@@ -82,6 +96,6 @@
                         </div>
                     </div>
 
+</div>
 
-
-  {% endblock %}
+{% endblock %}

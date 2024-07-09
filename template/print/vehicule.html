@@ -1,0 +1,214 @@
+{% extends 'layout/vehiculeDashroad.html'%}
+<!-- Page Heading -->
+{% load static %}
+{% block content %}
+{% include  "print/add_panne.html" %}
+{% include  "print/add_consommation.html" %}
+{% include  "print/add_entretien.html" %}
+
+{% include  "print/stat_consommation.html" %}
+
+<div>
+    <div >
+        <div class="card ">
+            <div class="row text-center text-white">
+                <div class="col-4 container">
+                    <div class="card-body bg-info " style="width: 18rem; margin: 5px 5px 5px 5px;">
+                        <h5 class="card-title">Pannes :</h5>
+                        <p class="card-text text-center">{{ non_paye.cout__sum|floatformat:2}} F CFA</p>
+                        <div>
+                            <a class="btn btn-warning" href="#ListPannes"><i class="fa fa-list"></i></a>
+                            <button data-toggle="modal" data-target="#" class="btn btn-secondary">
+                                <i class="fa fa-info fa-spin"></i>
+                            </button>
+                            <button data-toggle="modal" data-target="#add_panne" class="btn btn-primary">
+                                <i class="fa fa-plus fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 ">
+                    <div class="card-body bg-info" style="width: 18rem; margin: 5px 5px 5px;">
+                        <h5 class="card-title">Consommation :</h5>
+                        <p class="card-text text-center">{{ total_consommation.montant__sum|floatformat:-2}} F CFA</p>
+                        <div>
+                            <a class="btn btn-warning" href="#ListConsommations"><i class="fa fa-list"></i></a>
+                            <button data-toggle="modal" data-target="#stat_consommation" class="btn btn-secondary">
+                                <i class="fa fa-info fa-spin"></i>
+                            </button>
+                            <button data-toggle="modal" data-target="#add_consommation" class="btn btn-primary">
+                                <i class="fa fa-plus fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 ">
+                    <div class="card-body bg-info" style="width: 18rem; margin: 5px 5px 5px;">
+                        <h5 class="card-title">Entretiens :</h5>
+                        <p class="card-text text-center">{{ non_paye.cout__sum}} F CFA</p>
+                        <div>
+                            <a class="btn btn-warning" href="#ListEntretiens"><i class="fa fa-list"></i></a>
+                            <button data-toggle="modal" data-target="#" class="btn btn-secondary">
+                                <i class="fa fa-info fa-spin"></i>
+                            </button>
+                            <button data-toggle="modal" data-target="#add_entretien" class="btn btn-primary">
+                                <i class="fa fa-plus fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="container">
+        <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="">
+                                <h4 class="">PANNES</h4>
+                            </div>
+                            <div class="">                              
+                                                        
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Type </th>
+                                            <th>Pièce</th>
+                                            <th>Description</th>
+                                            <th>Date</th>
+                                            <th>Immobilisé</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for d in pannes %}
+                                        <tr>
+                                            <td>{{d.type.libelle}}</td>
+                                            <td>{{d.pieces}}</td>
+                                            <td>{{d.description}}</td>
+                                            <td>{{d.date|date:'d/m/Y'}}</td>
+                                            <td class="text-center">
+                                                {% if d.immobile %}
+                                                    <i class="fa fa-check text-success" aria-hidden="true"></i>
+                                                {% else %}
+                                                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'list_devis' d.id %}" class="btn btn-outline-info"><i class="fa fa-info fa-spin"></i></a>
+                                                <button type="button" data-toggle="modal" data-target="#update_panne{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                                <button type="button" data-toggle="modal" data-target="#delete_panne{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {% include  'print/update_panne.html' %}
+                                        {% include  'print/delete_panne.html' %}
+
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+        </div>
+    </div>
+
+    <!--------    Consommation   ----------------------------------->
+    <div class="container">
+        <div class="row">
+            <div class="col-5" id="ListConsommations">
+                <div class="card shadow mb-6">
+                    <div class="card-header py-3">
+                    <div class="">
+                        <h4 class="">Consommation</h4>
+                    </div>
+                    <div class="">                              
+                                                    
+                    </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Montant</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for d in consommations %}
+                                    <tr>
+                                        <td>{{d.date|date:'d/m/Y'}}</td>
+                                        <td>{{d.montant}}</td>
+                                        <td>
+                                            <button type="button" data-toggle="modal" data-target="#update_consommation{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#delete_consommation{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                        {% include  'print/update_consommation.html' %}
+                                        {% include  'print/delete_consommation.html' %}
+
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7" id="ListEntretiens">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                    <div class="">
+                        <h4 class="">ENTRETIENS</h4>
+                    </div>
+                    <div class="">                              
+                                                    
+                    </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Date</th>
+                                        <th>Nombre</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                 {% for d in entretiens %}
+                                    <tr>
+                                        <td>{{d.description}}</td>
+                                        <td>{{d.date|date:'d/m/Y'}}</td>
+                                        <td>{{d.nombre}}</td>
+                                        <td>{{d.montant}}</td>
+                                        <td>
+                                            <button type="button" data-toggle="modal" data-target="#update_entretien{{d.id}}" class="btn btn-outline-success"><i class="fas fa-pen"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#delete_entretien{{d.id}}" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+
+                                        {% include  'print/update_entretien.html' %}
+                                        {% include  'print/delete_entretien.html' %}
+
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+</div>
+
+ {% endblock %}

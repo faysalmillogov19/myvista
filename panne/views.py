@@ -21,21 +21,21 @@ def save(request, id):
             obj=Panne.objects.get(id=id)
         else:
             obj=Panne()
+            obj.vehicule_id=int(request.POST.get('vehicule'))
         obj.pieces=request.POST.get('pieces')
         obj.description=request.POST.get('description')
         obj.date=request.POST.get('date')
         obj.type_id=int(request.POST.get('type'))
-        obj.vehicule_id=int(request.POST.get('vehicule'))
         obj.immobile=bool(request.POST.get('immobile'))
         obj.save()
 
-    return redirect('list_panne', vehicule=obj.vehicule_id)
+    return redirect('print_infos_vehicule', id=obj.vehicule_id)
 
 @is_admin
 def delete(request, id):
     panne=Panne.objects.get(id=id)
     vehicule=panne.vehicule_id
     panne.delete()
-    return redirect('list_panne', vehicule=vehicule)
+    return redirect('print_infos_vehicule', id=vehicule)
 
 

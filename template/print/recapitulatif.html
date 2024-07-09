@@ -1,0 +1,88 @@
+{% extends 'layout/vehiculeDashroad.html'%}
+<!-- Page Heading -->
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nouveau véhicule</h5>
+            </div>
+            <form class="modal-body" method="POST" action="{% url 'save_vehicule' 0 %} ">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-6 form-group input-group-sm">
+                        <label for="exampleInputPassword1">Immatricucalation</label>
+                        <input type="text" class="form-control" name="immatriculation" required>
+                      </div>
+
+                      <div class="col-3 form-group input-group-sm">
+                        <label for="exampleInputPassword1">Acquision</label>
+                        <input type="date" class="form-control" name="date" required>
+                      </div>
+
+                      <div class="col-3 input-group-sm">
+                        <label for="exampleInputPassword1">Carburant</label>
+                        <select class="form-control" name="carburant" required>
+                          {% for carburant in carburants %}
+                            <option value="{{carburant.id}}">{{carburant.libelle}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+      
+                </div>
+
+                <div class="row">
+                    <div class="col-5 form-group input-group-sm">
+                        <label for="exampleInputPassword1">Marque</label>
+                        <input class="form-control" name="marque" required>
+                      </div>
+
+                      <div class="col-7 form-group input-group-sm">
+                        <label for="exampleInputPassword1">Modèle</label>
+                        <input type="text" class="form-control" name="modele" required>
+                      </div>
+                      
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-6 form-group input-group-sm">
+                        <label for="exampleInputPassword1">Catégorie</label>
+                        <select class="form-control" name="categorie" required>
+                          {% for categorie in categories %}
+                            <option value="{{categorie.id}}">{{categorie.libelle}}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-6 input-group-sm">
+                        <label for="exampleInputPassword1">Type</label>
+                        <select class="form-control" name="type" required>
+                          {% for type in types %}
+                            <option value="{{type.id}}">{{type.libelle}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+      
+                </div>
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Enregister</button>
+                  <a type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</a>
+                </div>
+          </form>
+          
+        </div>
+    </div>
+    <div class="col-5 card">
+      <img src="{% static cammember_vehicule %}" class="img-fluid" alt="" >
+    </div>
+
+</div>
+
+
+
+ {% endblock %}

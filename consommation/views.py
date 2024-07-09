@@ -22,18 +22,18 @@ def save(request, id):
             obj=Consommation.objects.get(id=id)
         else:
             obj=Consommation()
+            obj.vehicule_id=int(request.POST.get('vehicule'))
         obj.date=request.POST.get('date')
         obj.montant=request.POST.get('montant')
-        obj.vehicule_id=int(request.POST.get('vehicule'))
         obj.save()
 
-    return redirect('list_consommation', vehicule=obj.vehicule_id)
+    return redirect('print_infos_vehicule', id=obj.vehicule_id)
 
 @is_admin
 def delete(request, id):
     consommation=Consommation.objects.get(id=id)
     vehicule=consommation.vehicule_id
     consommation.delete()
-    return redirect('list_consommation', vehicule=vehicule)
+    return redirect('print_infos_vehicule', id=vehicule)
 
 

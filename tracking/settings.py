@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-*$mhoq3-&praj$i=87ksv#jf7a&8%jcpwi&z$$m5h8z)6fyv3d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.11.125']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -45,8 +45,12 @@ INSTALLED_APPS = [
     'mission',
     'consommation',
     'entretien',
+    'print',
     'api',
     'user',
+    'rest_framework',
+    'rest_framework.authtoken',
+    
 ]
 
 MIDDLEWARE = [
@@ -58,6 +62,25 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+'''
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        #'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+'''
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ]
+}
+
 
 ROOT_URLCONF = "tracking.urls"
 

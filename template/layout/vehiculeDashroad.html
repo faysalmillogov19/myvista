@@ -1,0 +1,235 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>VISTA ASSURANCE</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css'%}" rel="stylesheet">
+
+
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar accordion border-right border-dark " id="accordionSidebar" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example" tabindex="0"> <!-- style="background-color: #E52B50;" -->
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+                <div class="sidebar-brand-icon ">
+                  <!--img class="img-thumbnail rounded-circle" src="{% static 'img/logo.png' %}" alt="VISTA BANK" style="height: 100px; width: 100px;"-->
+                </div>
+                <div class="sidebar-brand-text mx-3">
+                    <p class="text-danger">MY VISTA </p>
+                </div>
+                <br>
+            </a>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+
+        {% if vehicule %}
+            <li class="nav-item border border-success">
+                <div class="nav-link">
+                    <div class="text-center">
+                        <button data-toggle="modal" data-target="#infos_vehicule{{vehicule.id}}" class="btn btn-outline-info">
+                            <i class="fa fa-info fa-spin"></i>
+                        </button>
+                        <a href="{% url 'maps_card' vehicule.id %}" class="btn btn-outline-warning"><i class="fas fa-map"></i></a>
+                        <a href="{% url 'print_infos_vehicule' vehicule.id %}" class="btn btn-outline-success"><i class="fa fa-angle-up"></i></a>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa fa-car text-dark"></i>
+                        <span class="text-dark font-weight-bold text-xl">{{vehicule.immatriculation}}</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-dark font-weight-bold text-xl">{{vehicule.marque.libelle}} {{vehicule.modele}}</span>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+        {% include  'print/infos_vehicule.html' %}
+        {% endif %}
+            <!-- Nav Item - Charts -->
+        {% for car in vehicules %}
+            <li class="nav-item">
+                <div class="nav-link">
+                    <div class="text-center">
+                        <button data-toggle="modal" data-target="#infos_vehicule{{car.id}}" class="btn btn-outline-info">
+                            <i class="fa fa-info "></i>
+                        </button>
+                        <a href="{% url 'maps_card' car.id %}" class="btn btn-outline-warning"><i class="fas fa-map "></i></a><!-- fa-spin -->
+                        <a href="{% url 'print_infos_vehicule' car.id %}" class="btn btn-outline-success"><i class="fa fa-angle-up"></i></a>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa fa-car text-dark"></i>
+                        <span class="text-dark font-weight-bold text-xl">{{car.immatriculation}}</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-dark font-weight-bold text-xl">{{car.marque.libelle}} {{car.modele}}</span>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            {% include  'print/infos_vehicule.html' %}
+        {% endfor %}
+
+            
+            <!-- Divider -->
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Sidebar Message -->
+            <!--div class="sidebar-card d-none d-lg-flex">
+                <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
+                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
+                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+            </div-->
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                <br class="bg-danger">
+                <!-- Topbar -->
+                {% include  'layout/header.html' %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                        {% block content %}{% endblock %}
+
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; VISTA ASSURANCE <script type="text/javascript"> document.write( new Date().getFullYear()); </script></span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js'%}"></script>
+
+    
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js'%}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js'%}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js'%}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js'%}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js'%}"></script>
+    <!-- Inclure jQuery -->
+    <script src="{% static 'vendor/jquery/jquery.js' %}"></script>
+
+    <script>
+        $("#piece_value").change(function(){
+            val=$("#piece_value").val();
+            $('#asi_piece_details').attr('data',val);
+
+        });
+    </script>
+    <script>
+        $('.facture_proforma').click(function(){
+            var url=$('.facture_proforma').val();
+            $('#pdf_reader').attr('data', url);
+
+        });
+    </script>
+    <script>
+        $('.col_profil').each(function() {
+
+            id=this.id
+            $.ajax({
+               type: "GET",
+               url: "/user/get_role/"+id,
+               dataType: 'JSON',
+               success: function(response){
+                    
+                    val=String(response.role)
+                    $(".fp_"+id).text(val);
+                    $(this).attr('data-th',val);
+                
+               }
+            });
+
+        });
+    </script>
+      <script>
+    function printPageArea(areaID){
+        var printContent = document.getElementById(areaID).innerHTML;
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+  </script>
+
+
+</body>
+
+
+</html>

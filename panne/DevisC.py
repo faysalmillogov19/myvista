@@ -12,6 +12,7 @@ from SystemConf.Back_Control_Access import is_admin, is_client, is_employe, is_s
 
 @is_admin
 def index(request, panne):
+    panne=Panne.objects.get(id=panne)
     garages=Garage.objects.all()
     data=Devis.objects.filter(panne_id=panne)
     return render(request, 'devis/list.html',{'data':data, 'garages':garages, 'panne':panne})

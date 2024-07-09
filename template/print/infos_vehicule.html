@@ -1,0 +1,36 @@
+{% load static %}
+<div class="modal fade" id="infos_vehicule{{car.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" >        
+    <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{car.marque.libelle}} {{car.modele}} ( <mark>N° {{car.immatriculation}}</mark> )</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body row">
+              <div class="col-6">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <img src="{% static 'img/icons8-voiture.gif' %}" class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                    </li>
+                    <li class="list-group-item">Acquisition: {{car.date|date:"d/m/Y"}}</li>
+                    <li class="list-group-item">Categorie: {{car.categorie.libelle}}</li>
+                    <li class="list-group-item">Type: {{car.type.libelle}}</li>
+                    <li class="list-group-item">Energie: {{car.carburant.libelle}}</li>
+                 </ul>
+              </div>
+              <div class="col-6 text-center justify-content-center">
+                <ul class="list-group ">
+                    <li class="list-group-item">
+                      <img src="{% static 'img/icons8-utilisateur.gif' %}" class="img-profile rounded-circle fa-spin" src="img/undraw_profile.svg">
+                      <span>Client</span>
+                    </li>
+                  {% if car.proprio %}
+                    <li class="list-group-item">{{car.proprio.first_name}} {{car.proprio.last_name}}</li>
+                    <li class="list-group-item">Contact: {{car.proprio.email}}</li>
+                  {% endif %}
+               </ul>
+            </div>
+            </div>
+    </div>
+  </div>
+</div>

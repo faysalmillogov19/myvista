@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include, re_path
 from . import views
+from rest_framework import routers
 from django.conf.urls.static import static
 from django.conf import settings
+
+#router = routers.SimpleRouter()
+#router.register(r'/test', views.PanneSerializer)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,9 +33,14 @@ urlpatterns = [
     path('mission/', include('mission.urls')),
     path('consommation/', include('consommation.urls')),
     path('entretien/', include('entretien.urls')),
+    path('print/', include('print.urls')),
     path('api/', include('api.urls')),
     path('user/', include('user.urls')),
+    #re_path(r'^api/', include(router.urls)),
+    #re_path(r'^api/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+#urlpatterns += router.urls
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root= settings.STATIC_ROOT)

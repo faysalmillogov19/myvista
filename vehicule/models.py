@@ -18,6 +18,7 @@ class Carburant(models.Model):
 
 class Vehicule(models.Model):
     immatriculation=models.CharField(max_length=250,null=True)
+    imei=models.CharField(max_length=250,null=True)
     modele=models.CharField(max_length=250,null=True)
     date=models.DateField(null=True)
     carburant=models.ForeignKey(Carburant, null=True, on_delete=models.CASCADE)
@@ -25,3 +26,4 @@ class Vehicule(models.Model):
     marque=models.ForeignKey(Marque, null=True, on_delete=models.CASCADE)
     categorie=models.ForeignKey(Categorie, null=True, on_delete=models.CASCADE)
     proprio=models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    desactivate=models.BooleanField(default=False, null=True)

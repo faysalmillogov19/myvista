@@ -1,0 +1,7 @@
+from rest_framework import viewsets
+from .models import Panne
+from .serializer import PanneSerializer
+
+class PanneViewSet(viewsets.ModelViewSet):
+	queryset = Panne.objects.all()
+	serializer_class = PanneSerializer

@@ -7,7 +7,7 @@
             <form class="modal-body" method="POST" action="{% url 'save_devis' 0 %} " enctype="multipart/form-data">
                   {% csrf_token %}
 
-                  <input name="panne" type="hidden" value="{{panne}}">
+                  <input name="panne" type="hidden" value="{{panne.id}}">
 
                   <div class="form-group input-group-sm">
                     <label for="exampleInputPassword1">Garage <a class="btn btn-info btn-circle" href="{% url 'list_garage' %}" target="_blank" ><i class="fa fa-plus"></i></a></label>

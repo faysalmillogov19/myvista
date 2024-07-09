@@ -1,0 +1,42 @@
+{% load static %}
+<div class="modal fade" id="stat_consommation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" >        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Statistiques Consommation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" method="POST" action="#">
+                  {% csrf_token %}
+                {% if graphic_consommation %}
+                  <input type="hidden" name="vehicule" value="{{vehicule.id}}">
+
+                  <div class="row">
+                      <div class="form-group input-group-sm col-4">
+                        <label for="exampleInputPassword1">Debut</label>
+                        <input type="date" class="form-control" name="debut" required>
+                      </div>
+                      <div class="form-group input-group-sm col-4">
+                        <label for="exampleInputPassword1">Fin</label>
+                        <input type="date" class="form-control" name="fin" required>
+                      </div>
+    
+                      <div class="form-group input-group-sm col-4">
+                        <br>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        
+                      </div>
+                  </div>  
+                  <div class="container">
+                    
+                      <img src="{% static graphic_consommation %}" class="img-fluid" alt="Graph">
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Quitter</a>
+                  </div> 
+                {% endif %} 
+            </form>
+            
+        </div>
+    </div>
+</div>

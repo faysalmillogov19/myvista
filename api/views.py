@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from vehicule.models import Vehicule, Marque, Categorie, Carburant, Type
+from vehicule.models import Vehicule, Marque, Categorie, Carburant, Type as Type_vehicule
 from panne.models import Panne, Devis, Type
 from consommation.models import Consommation
 from entretien.models import Entretien, Type_entretien
@@ -15,28 +15,41 @@ import json
 from django.middleware.csrf import get_token
 import datetime
 
-#@is_client
-def csrftoken(request):
-    token = get_token(request)
-    return JsonResponse({'token': token})
-
+from django.forms.models import model_to_dict
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 
 ######################################################
 ##################  MODEL LIST   #####################
 ######################################################
 
-@is_client
+@api_view(['GET'])
+#@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_vehicule(request):
     user_id=request.user.id
-    data = Vehicule.objects.filter(proprio_id=user_id)
+    query = Vehicule.objects.filter(proprio_id=user_id, desactivate=False)
     output=[]
-    for query in data:
-        output.append({'id': query.id, 'immatriculation': query.immatriculation, 'modele':query.modele,'marque':query.marque.libelle})
+    for data in query:
+        output.append(
+            {
+            "id": data.id, 'immatriculation_vehicule':data.immatriculation, 'modele':data.modele, "date": data.date, "marque_id": data.marque.id,
+            'marque_libelle':data.marque.libelle, "type_id": data.type.id, "type_libelle":data.type.libelle, 'categorie_id':data.categorie.id,
+            'categorie_libelle':data.categorie.libelle, 'carburant_id':data.carburant.id, 'carburant_libelle':data.carburant.libelle,
+            }
+        )
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
 
-@is_client
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_panne(request, vehicule):
     data = Panne.objects.filter(vehicule_id=vehicule)
     output=[]
@@ -50,9 +63,11 @@ def list_panne(request, vehicule):
             }
         )
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
-@is_client
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_consommation(request, vehicule):
     data = Consommation.objects.filter(vehicule_id=vehicule)
     output=[]
@@ -65,28 +80,37 @@ def list_consommation(request, vehicule):
             }
         )
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_typepanne(request):
     data = Type.objects.all()
     output=[]
     for query in data:
         output.append({'id': query.id, 'libelle': query.libelle})
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_type_entretien(request):
     data = Type_entretien.objects.all()
     output=[]
     for query in data:
         output.append({'id': query.id, 'libelle': query.libelle, 'duree_moyenne':query.duree_moyenne })
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_entretien(request, vehicule):
     data = Entretien.objects.filter(vehicule_id=vehicule)
     output=[]
@@ -100,15 +124,79 @@ def list_entretien(request, vehicule):
             }
         )
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def list_type_vehicule(request):
+    data = Type_vehicule.objects.all()
+    output=[]
+    for query in data:
+        output.append({'id': query.id, 'libelle': query.libelle })
+    
+    return Response(output)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def list_categorie(request):
+    data = Categorie.objects.all()
+    output=[]
+    for query in data:
+        output.append({'id': query.id, 'libelle': query.libelle, "description": query.libelle })
+    
+    return Response(output)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def list_carburant(request):
+    data = Carburant.objects.all()
+    output=[]
+    for query in data:
+        output.append({'id': query.id, 'libelle': query.libelle })
+    
+    return Response(output)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def list_marque(request):
+    data = Marque.objects.all()
+    output=[]
+    for query in data:
+        output.append({'id': query.id, 'libelle': query.libelle })
+    
+    return Response(output)
 
 
 ########################################################
 #################### GET INFO ##########################
 ########################################################
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_vehicule(request, id):
+    try:
+        data = Vehicule.objects.get(id=id)
+        output={
+            "id": data.id, 'immatriculation_vehicule':data.immatriculation, 'modele':data.modele, "date": data.date, "marque_id": data.marque.id,
+            'marque_libelle':data.marque.libelle, "type_id": data.type.id, "type_libelle":data.type.libelle, 'categorie_id':data.categorie.id,
+            'categorie_libelle':data.categorie.libelle, 'carburant_id':data.carburant.id, 'carburant_libelle':data.carburant.libelle,
+        }
+    except Exception as e:
+        output={}
+        
+    
+    return Response(output)
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_panne(request, id):
     try:
         data = Panne.objects.get(id=id)
@@ -122,10 +210,13 @@ def get_panne(request, id):
         output={}
         
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_typepanne(request, id):
     
     try:
@@ -134,9 +225,12 @@ def get_typepanne(request, id):
     except Exception as e:
         output={}
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_consommation(request, id):
     
     try:
@@ -149,10 +243,13 @@ def get_consommation(request, id):
     except Exception as e:
         output={}
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_type_entretien(request, id):
     
     try:
@@ -161,10 +258,13 @@ def get_type_entretien(request, id):
     except Exception as e:
         output={}
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_entretien(request, id):
     
     try:
@@ -178,7 +278,7 @@ def get_entretien(request, id):
     except Exception as e:
         output={}
     
-    return JsonResponse(output, status=200, safe=False)
+    return Response(output)
 
 
 
@@ -187,79 +287,157 @@ def get_entretien(request, id):
 ####################    SAVE      ######################
 ########################################################
 
-#@is_client
-def save_panne(request, id):
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def save_vehicule(request, id):
+    id=int(id)
     data={'reponse':0}
-    if request.method=='POST':
-        if id>0:
-            obj=Panne.objects.get(id=id)
-        else:
-            obj=Panne()
-        
-        try:
-            obj.pieces=request.POST.get('piece')
-            obj.description=request.POST.get('description')
+    if id>0:
+        obj=Vehicule.objects.get(id=id)
+    else:
+        obj=Vehicule()
+        obj.proprio_id=request.user.id
+        obj.desactivate=False
+    try:
+        obj.immatriculation=request.POST.get('immatriculation')
+        obj.modele=request.POST.get('modele')
+        if request.POST.get('date'):
             obj.date=datetime.datetime.strptime(request.POST.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        if int(request.POST.get('categorie')):
+            obj.categorie_id=int(request.POST.get('categorie'))
+
+
+        if request.POST.get('marque'):
+            saisie=str(request.POST.get('marque')).lower()
+            marque=Marque.objects.filter(libelle__icontains=saisie).first()
+            if marque is None:
+                marque=Marque()
+                marque.libelle= request.POST.get('marque')
+                marque.save()
+
+            obj.marque=marque
+        if int( request.POST.get('type') ):
             obj.type_id=int(request.POST.get('type'))
-            obj.vehicule_id=int(request.POST.get('vehicule'))
-            obj.immobile=bool(request.POST.get('immobile'))
-            obj.save()
-            data={'response':1}
-        except Exception as e:
-            data={'response':-1}
+        if request.POST.get('carburant'):
+            obj.carburant_id=int(request.POST.get('carburant'))
+        obj.save()
+        data={'response':1}
+    except Exception as e:
+        data={'response':-1}
     
-    return JsonResponse(data, status=200, safe=False)
+    return Response(data)
 
 
-#@is_client
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def save_panne(request, id):
+    id=int(id)
+    data={'reponse':0}
+    if id>0:
+        obj=Panne.objects.get(id=id)
+    else:
+        obj=Panne()
+    try:
+        obj.pieces=request.POST.get('piece')
+        obj.description=request.POST.get('description')
+        obj.date=datetime.datetime.strptime(request.POST.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        obj.type_id=int(request.POST.get('type'))
+        obj.vehicule_id=int(request.POST.get('vehicule'))
+        obj.immobile=bool(request.POST.get('immobile'))
+        obj.save()
+        data={'response':1}
+    except Exception as e:
+        data={'response':-1}
+    
+    return Response(data)
+
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def save_consommation(request, id):
     data={'reponse':0}
-    if request.method=='POST':
-        if id>0:
-            obj=Consommation.objects.get(id=id)
-        else:
-            obj=Consommation()
+    if id>0:
+        obj=Consommation.objects.get(id=id)
+    else:
+        obj=Consommation()
         
-        try:
-            obj.montant=int(request.POST.get('montant'))
-            obj.date=datetime.datetime.strptime(request.POST.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-            obj.vehicule_id=int(request.POST.get('vehicule'))
-            obj.save()
-            data={'response':1}
-        except Exception as e:
-            data={'response':-1}
+    try:
+        obj.montant=int(request.POST.get('montant'))
+        obj.date=datetime.datetime.strptime(request.POST.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        obj.vehicule_id=int(request.POST.get('vehicule'))
+        obj.save()
+        data={'response':1}
+    except Exception as e:
+        data={'response':-1}
     
-    return JsonResponse(data, status=200, safe=False)
+    return Response(data)
 
 
-#@is_client
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def save_entretien(request, id):
     data={'reponse':0}
-    if request.method=='POST':
-        if id>0:
-            obj=Entretien.objects.get(id=id)
-        else:
-            obj=Entretien()
+    if id>0:
+        obj=Entretien.objects.get(id=id)
+    else:
+        obj=Entretien()
         
-        try:
-            obj.description=str(request.POST.get('description'))
-            obj.montant=float(request.POST.get('montant'))
-            obj.montant=float(request.POST.get('nombre'))
-            obj.date=datetime.datetime.strptime(request.POST.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-            obj.vehicule_id=int(request.POST.get('vehicule'))
-            obj.type_id=int(request.POST.get('type'))
-            obj.save()
-            data={'response':1}
-        except Exception as e:
-            data={'response':-1}
+    try:
+        obj.description=str(request.POST.get('description'))
+        obj.montant=float(request.POST.get('montant'))
+        obj.nombre=float(request.POST.get('nombre'))
+        obj.date=datetime.datetime.strptime(request.POST.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        obj.vehicule_id=int(request.POST.get('vehicule'))
+        obj.type_id=int(request.POST.get('type'))
+        obj.save()
+        data={'response':1}
+    except Exception as e:
+        data={'response':-1}
     
-    return JsonResponse(data, status=200, safe=False)
+    return Response(data)
 
 #########################################################
 #####################   DELETE   ########################
 #########################################################
 
-@is_client
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def desactive_vehicule(request, id):
+    try:
+        obj=Vehicule.objects.get(id=id)
+        obj.desactivate=True
+        obj.save()
+        data={'response':1}
+    except Exception as e:
+        data={'response':-1}
+    return Response(data)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def active_vehicule(request, id):
+    try:
+        obj=Vehicule.objects.get(id=id)
+        obj.desactivate=False
+        obj.save()
+        data={'response':1}
+    except Exception as e:
+        data={'response':-1}
+    return Response(data)
+
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_panne(request, id):
     try:
         panne=Panne.objects.get(id=id)
@@ -267,9 +445,12 @@ def delete_panne(request, id):
         data={'response':1}
     except Exception as e:
         data={'response':-1}
-    return JsonResponse(data, status=200, safe=False)
+    return Response(data)
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_consommation(request, id):
     try:
         obj=Consommation.objects.get(id=id)
@@ -277,9 +458,12 @@ def delete_consommation(request, id):
         data={'response':1}
     except Exception as e:
         data={'response':-1}
-    return JsonResponse(data, status=200, safe=False)
+    return Response(data)
 
-@is_client
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def delete_entretien(request, id):
     try:
         obj=Entretien.objects.get(id=id)
@@ -287,4 +471,4 @@ def delete_entretien(request, id):
         data={'response':1}
     except Exception as e:
         data={'response':-1}
-    return JsonResponse(data, status=200, safe=False)
+    return Response(data)

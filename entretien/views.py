@@ -22,23 +22,24 @@ def save(request, id):
             obj=Entretien.objects.get(id=id)
         else:
             obj=Entretien()
+            obj.vehicule_id=int(request.POST.get('vehicule'))
+            
         obj.description=request.POST.get('description')
         obj.date=request.POST.get('date')
         if request.POST.get('nombre'):
             obj.nombre=float(request.POST.get('nombre'))
         if request.POST.get('montant'):
             obj.montant=float(request.POST.get('montant'))
-        obj.vehicule_id=int(request.POST.get('vehicule'))
         obj.type_id=int(request.POST.get('type'))
         obj.save()
 
-    return redirect('liste_entretien', vehicule=obj.vehicule_id)
+    return redirect('print_infos_vehicule', id=obj.vehicule_id)
 
 @is_admin
 def delete(request, id):
     entretien=Entretien.objects.get(id=id)
     vehicule=entretien.vehicule_id
     entretien.delete()
-    return redirect('liste_entretien', vehicule=vehicule)
+    return redirect('print_infos_vehicule', id=vehicule)
 
 
